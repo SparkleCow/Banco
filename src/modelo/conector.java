@@ -5,7 +5,11 @@
 package modelo;
 
 import java.sql.*;
-import javax.swing.JOptionPane;
+
+/**
+ * Coneccion a nuestra base de datos local.
+ * @author SparkleCow
+ */
 
 public class conector {
     
@@ -17,8 +21,7 @@ public class conector {
         Connection conexion = null;
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conexion= DriverManager.getConnection(url,usuario, contraseña);
-                    
+            conexion = DriverManager.getConnection(url,usuario, contraseña);  
         }catch(ClassNotFoundException | SQLException e){
             System.err.println("Error "+e);
         }

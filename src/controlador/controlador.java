@@ -11,6 +11,11 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import modelo.*;
 import vistas.*;
 
+/**
+ * @author SparkleCow
+ * Implementamos la interfaz ActionListener en la creación del controlador
+ */
+
 public class controlador implements ActionListener{
     
     private ventanaPrincipal principal;
@@ -22,11 +27,19 @@ public class controlador implements ActionListener{
     private int numeroVentana = 0;
     
     
+    /**
+     * Iniciamos el constructor agregando el metodo iniciarBanco.
+     */
+    
     public controlador(){
          iniciarBanco();
          acciones = new accionesJDBC();
         
     }
+    
+    /**
+     * Creamos las vistas de los menus y agregamos la interfaz actionListener a sus componentes.
+     */
     
     public void iniciarMenuBanco(){
         menuBanco = new bancoPrincipal();
@@ -34,6 +47,7 @@ public class controlador implements ActionListener{
         menuBanco.btnConsignar.addActionListener(this);
         menuBanco.btnRetirar.addActionListener(this);
     }
+    
     
     public void iniciarBanco(){
         principal = new ventanaPrincipal();      
@@ -56,12 +70,27 @@ public class controlador implements ActionListener{
         registro.botonRegresar.addActionListener(this);
     }
     
+    /**
+     * Agregamos los metodos para limpiar los espacios de los formulario
+     */
+    
     public void limpiarRegistro(){
         registro.textoNombre.setText("");
         registro.textoContraseña.setText("");
         registro.textoRepetir.setText("");
     }
+    
+    public void limpiarInicioSesion(){
+        inicioSesion.textoNombreInicio.setText("");
+        inicioSesion.textoContraseñaInicio.setText("");
+    }
 
+    
+    /**
+     * Implementacion del metodo actionPerformed para cada componente de nuestras vistas.
+     * @param e 
+     */
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if ((numeroVentana==2)&&(e.getSource() == registro.botonRegistro)) {
@@ -72,6 +101,7 @@ public class controlador implements ActionListener{
                 JOptionPane.showMessageDialog(null, "Registro realizado con exito");
             } else {
                 JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
+                limpiarRegistro();
             }
         }if(e.getSource()==principal.botonInicio){
             principal.dispose();
@@ -86,6 +116,7 @@ public class controlador implements ActionListener{
                     menuBanco.setDinero();
                 }else{
                     JOptionPane.showMessageDialog(null, "Usuario no encontrado");
+                    limpiarInicioSesion();
                 }           
         }if((numeroVentana==1)&&(e.getSource()==inicioSesion.botonRegresar)){
             inicioSesion.dispose();
@@ -101,7 +132,7 @@ public class controlador implements ActionListener{
             numeroVentana = 0;
         }       
         if(menuBanco!=null && e.getSource()==menuBanco.btnConsignar){
-            int dineroConsignado = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingresa la cantidad de dinero que deseas consignar a tu cuenta"));
+            double dineroConsignado = Double.parseDouble(JOptionPane.showInputDialog(null, "Ingresa la cantidad de dinero que deseas consignar a tu cuenta"));
             acciones.consignar(persona, dineroConsignado);
             acciones.actualizarUsuario(persona);
             menuBanco.setDinero();
